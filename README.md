@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Artists Links
 
-## Getting Started
+Artists Links est une application web qui a pour objectif d'explorer les collaborations entre artistes sous forme de graphe musical.
 
-First, run the development server:
+L'idée est de rechercher un artiste, visualiser ses featuring et collaborations, puis naviguer de noeud en noeud pour mettre en évidence des proximités musicales, des artistes en commun et des passerelles entre genres.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## État du projet
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le projet est en phase de mise en place.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+À ce stade, les éléments suivants sont en place :
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- socle `Next.js + TypeScript`
+- base PostgreSQL via `Docker Compose`
+- ORM `Prisma`
+- schéma initial pour les artistes, genres et collaborations
+- seed de démonstration
+- première route API de recherche d'artistes
 
-## Learn More
+## Stack technique
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js
+- TypeScript
+- React
+- Tailwind CSS
+- Prisma
+- PostgreSQL
+- Docker Compose
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Démarrage rapide
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Installer les dépendances :
 
-## Deploy on Vercel
+`npm install`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Copier le fichier d'environnement :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`cp .env.example .env`
+
+Démarrer PostgreSQL :
+
+`docker compose up -d postgres`
+
+Appliquer les migrations Prisma :
+
+`npx prisma migrate dev`
+
+Injecter les données de démonstration :
+
+`npm run db:seed`
+
+Démarrer le serveur de développement :
+
+`npm run dev`
+
+## Commandes utiles
+
+Lancer le serveur de développement :
+
+`npm run dev`
+
+Vérifier le lint :
+
+`npm run lint`
+
+Générer le client Prisma :
+
+`npx prisma generate`
+
+Relancer les migrations en développement :
+
+`npx prisma migrate dev`
+
+Rejouer le seed :
+
+`npm run db:seed`
+
+## Documentation
+
+- `docs/setup.md` : mise en place du projet en local
+- `docs/technical-rules.md` : conventions et règles techniques
+
+## Direction produit
+
+Les prochaines étapes prévues sont :
+
+- création de l'interface de recherche
+- affichage des résultats côté frontend
+- intégration d'un graphe interactif
+- enrichissement progressif du modèle de données
+
+## Remarques
+
+Le projet privilégie pour l'instant une approche simple et lisible, avec des fichiers courts, une séparation claire des responsabilités, et une documentation légère mais utile.

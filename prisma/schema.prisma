@@ -1,0 +1,49 @@
+// Schéma Prisma de la première itération du projet.
+// Cette version modélise les artistes, les genres et les collaborations entre artistes.
+//
+// Le schéma reste volontairement simple pour valider d'abord l'expérience graphe.
+// Les morceaux pourront être ajoutés dans une seconde étape quand les besoins seront stabilisés.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Artist {
+  id             String          @id @default(cuid())
+  name           String          @unique
+  slug           String          @unique
+  primaryGenreId String?
+  primaryGenre   Genre?          @relation(fields: [primaryGenreId], references: [id], onDelete: SetNull)
+  outgoingLinks  Collaboration[] @relation("SourceArtist")
+  incomingLinks  Collaboration[] @relation("TargetArtist")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Genre {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  color     String
+  artists   Artist[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Collaboration {
+  id             String   @id @default(cuid())
+  sourceArtistId String
+  targetArtistId String
+  contextLabel   String?
+  sourceArtist   Artist   @relation("SourceArtist", fields: [sourceArtistId], references: [id], onDelete: Cascade)
+  targetArtist   Artist   @relation("TargetArtist", fields: [targetArtistId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+
+  @@unique([sourceArtistId, targetArtistId])
+  @@index([sourceArtistId])
+  @@index([targetArtistId])
+}
