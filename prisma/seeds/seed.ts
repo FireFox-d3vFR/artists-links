@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Ce seed crée un petit jeu de données de démonstration pour valider
-// la recherche d'artistes et préparer les premiers tests de graphe.
+// la recherche d'artistes, le détail d'un artiste et les premiers liens directs.
 async function main() {
   const rap = await prisma.genre.upsert({
     where: { name: "Rap" },
@@ -27,7 +27,7 @@ async function main() {
     },
   });
 
-  await prisma.artist.upsert({
+  const sch = await prisma.artist.upsert({
     where: { slug: "sch" },
     update: {
       name: "SCH",
@@ -40,7 +40,7 @@ async function main() {
     },
   });
 
-  await prisma.artist.upsert({
+  const ninho = await prisma.artist.upsert({
     where: { slug: "ninho" },
     update: {
       name: "Ninho",
@@ -53,7 +53,7 @@ async function main() {
     },
   });
 
-  await prisma.artist.upsert({
+  const damso = await prisma.artist.upsert({
     where: { slug: "damso" },
     update: {
       name: "Damso",
@@ -66,7 +66,7 @@ async function main() {
     },
   });
 
-  await prisma.artist.upsert({
+  const burnaBoy = await prisma.artist.upsert({
     where: { slug: "burna-boy" },
     update: {
       name: "Burna Boy",
@@ -76,6 +76,57 @@ async function main() {
       name: "Burna Boy",
       slug: "burna-boy",
       primaryGenreId: afro.id,
+    },
+  });
+
+  await prisma.collaboration.upsert({
+    where: {
+      sourceArtistId_targetArtistId: {
+        sourceArtistId: sch.id,
+        targetArtistId: ninho.id,
+      },
+    },
+    update: {
+      contextLabel: "Autour du rap francophone",
+    },
+    create: {
+      sourceArtistId: sch.id,
+      targetArtistId: ninho.id,
+      contextLabel: "Autour du rap francophone",
+    },
+  });
+
+  await prisma.collaboration.upsert({
+    where: {
+      sourceArtistId_targetArtistId: {
+        sourceArtistId: sch.id,
+        targetArtistId: damso.id,
+      },
+    },
+    update: {
+      contextLabel: "Pont rap sombre et mélodique",
+    },
+    create: {
+      sourceArtistId: sch.id,
+      targetArtistId: damso.id,
+      contextLabel: "Pont rap sombre et mélodique",
+    },
+  });
+
+  await prisma.collaboration.upsert({
+    where: {
+      sourceArtistId_targetArtistId: {
+        sourceArtistId: damso.id,
+        targetArtistId: burnaBoy.id,
+      },
+    },
+    update: {
+      contextLabel: "Ouverture afro et internationale",
+    },
+    create: {
+      sourceArtistId: damso.id,
+      targetArtistId: burnaBoy.id,
+      contextLabel: "Ouverture afro et internationale",
     },
   });
 }

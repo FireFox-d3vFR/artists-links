@@ -1,15 +1,8 @@
 import { prisma } from "@/lib/prisma";
-
-type ArtistListItem = {
-  id: string;
-  name: string;
-  slug: string;
-  primaryGenre: {
-    id: string;
-    name: string;
-    color: string;
-  } | null;
-};
+import type {
+  ArtistDetails,
+  ArtistListItem,
+} from "@/types/artists/artist.types";
 
 // Ce module regroupe les accès aux données liés aux artistes.
 // On garde ici des requêtes simples et lisibles pour poser une base saine.
@@ -76,4 +69,105 @@ export async function searchArtists(query: string): Promise<ArtistListItem[]> {
     },
     take: 10,
   });
+}
+
+// Cette requête prépare le futur panneau de détail d'un artiste.
+// Elle récupère l'artiste demandé ainsi que ses liens directs entrants et sortants.
+export async function getArtistDetailsBySlug(
+  slug: string,
+): Promise<ArtistDetails | null> {
+  const normalizedSlug = slug.trim().toLowerCase();
+
+  if (!normalizedSlug) {
+    return null;
+  }
+
+  const artist = await prisma.artist.findUnique({
+    where: {
+      slug: normalizedSlug,
+    },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      primaryGenre: {
+        select: {
+          id: true,
+          name: true,
+          color: true,
+        },
+      },
+      outgoingLinks: {
+        orderBy: {
+          targetArtist: {
+            name: "asc",
+          },
+        },
+        select: {
+          id: true,
+          contextLabel: true,
+          targetArtist: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              primaryGenre: {
+                select: {
+                  id: true,
+                  name: true,
+                  color: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      incomingLinks: {
+        orderBy: {
+          sourceArtist: {
+            name: "asc",
+          },
+        },
+        select: {
+          id: true,
+          contextLabel: true,
+          sourceArtist: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              primaryGenre: {
+                select: {
+                  id: true,
+                  name: true,
+                  color: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!artist) {
+    return null;
+  }
+
+  return {
+    id: artist.id,
+    name: artist.name,
+    slug: artist.slug,
+    primaryGenre: artist.primaryGenre,
+    outgoingCollaborations: artist.outgoingLinks.map((link) => ({
+      id: link.id,
+      contextLabel: link.contextLabel,
+      artist: link.targetArtist,
+    })),
+    incomingCollaborations: artist.incomingLinks.map((link) => ({
+      id: link.id,
+      contextLabel: link.contextLabel,
+      artist: link.sourceArtist,
+    })),
+  };
 }
