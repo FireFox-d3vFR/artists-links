@@ -25,7 +25,7 @@ export function ArtistExplorationView({
   const graphData = artist ? buildArtistGraphData(artist) : null;
 
   return (
-    <section className="grid w-full gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
+    <section className="grid w-full gap-6 xl:grid-cols-[minmax(0,1.35fr)_300px] xl:items-start">
       <div className="min-w-0">
         {artist && graphData ? (
           <ArtistGraph
@@ -61,12 +61,14 @@ export function ArtistExplorationView({
         )}
       </div>
 
-      <ArtistOverviewPanel
-        artist={artist}
-        isLoading={isLoading}
-        errorMessage={errorMessage}
-        onArtistSelect={onArtistSelect}
-      />
+      <div className="min-w-0">
+        <ArtistOverviewPanel
+          artist={artist}
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          onArtistSelect={onArtistSelect}
+        />
+      </div>
     </section>
   );
 }

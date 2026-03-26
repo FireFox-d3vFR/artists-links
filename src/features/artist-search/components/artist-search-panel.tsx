@@ -67,7 +67,7 @@ export function ArtistSearchPanel({
   return (
     <div
       className={`flex w-full flex-col ${
-        isCompact ? "gap-3 max-w-none" : "max-w-2xl gap-4"
+        isCompact ? "max-w-none gap-2" : "max-w-2xl gap-4"
       }`}
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -77,7 +77,7 @@ export function ArtistSearchPanel({
 
         <div
           className={`flex flex-col rounded-[1.75rem] border border-white/12 bg-slate-950/45 shadow-lg shadow-black/20 md:flex-row md:items-center ${
-            isCompact ? "gap-2 p-2" : "gap-3 p-3"
+            isCompact ? "gap-2 p-1.5" : "gap-3 p-3"
           }`}
         >
           <input
@@ -88,7 +88,7 @@ export function ArtistSearchPanel({
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Exemple : SCH, Ninho, Damso..."
             className={`flex-1 rounded-[1.1rem] border border-transparent bg-white/96 text-slate-950 outline-none transition focus:border-blue-500 ${
-              isCompact ? "h-11 px-4 text-sm" : "h-14 px-5 text-base"
+              isCompact ? "h-10 px-4 text-sm" : "h-14 px-5 text-base"
             }`}
           />
 
@@ -96,7 +96,7 @@ export function ArtistSearchPanel({
             type="submit"
             disabled={isLoading}
             className={`rounded-[1.1rem] bg-blue-500 font-semibold tracking-wide text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:bg-blue-500/60 ${
-              isCompact ? "h-11 px-5 text-sm" : "h-14 px-6 text-sm"
+              isCompact ? "h-10 px-4 text-sm" : "h-14 px-6 text-sm"
             }`}
           >
             {isLoading ? "Recherche..." : "Explorer"}
