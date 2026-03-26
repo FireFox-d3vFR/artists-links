@@ -56,21 +56,21 @@ Il sert à garder une vision simple de ce qui est terminé, en cours ou encore �
 - Validation : graphe central et panneau latéral séparé
 
 ### UX 1.3 - Finitions de la vue exploration
-- Statut : en cours
+- Statut : fait
 - Objectif : améliorer la hiérarchie visuelle entre header, graphe et panneau latéral
 - Validation : vue exploration plus compacte, plus lisible et mieux équilibrée
 
 ## Bloc UX 2
 
-### UX 2.1 - Modal artiste
-- Statut : à faire
-- Objectif : remplacer le panneau latéral par une logique de modal
-- Validation : clic sur un artiste ouvre un modal de détail
+### UX 2.1 - Panneau contextuel artiste
+- Statut : fait
+- Objectif : transformer le panneau latéral actuel en panneau ouvrable/fermé piloté par les interactions du graphe
+- Validation : clic sur un artiste ouvre le panneau, fermeture possible sans perdre la vue graphe
 
-### UX 2.2 - Modal collaborateur
+### UX 2.2 - Panneau collaborateur
 - Statut : à faire
-- Objectif : afficher le contexte de relation avec l'artiste principal
-- Validation : le modal d'un collaborateur présente les liens communs et une action d'exploration
+- Objectif : afficher le contexte de relation avec l'artiste principal dans le panneau
+- Validation : le panneau d'un collaborateur présente les liens communs et une action d'exploration
 
 ## Bloc Data 2
 
@@ -81,5 +81,5 @@ Il sert à garder une vision simple de ce qui est terminé, en cours ou encore �
 
 ### Data 2.2 - Enrichissement des détails artiste
 - Statut : à faire
-- Objectif : préparer les informations nécessaires aux futurs modals
+- Objectif : préparer les informations nécessaires aux futurs panneaux contextuels
 - Validation : structure compatible avec infos artiste, morceaux communs et exploration avancée

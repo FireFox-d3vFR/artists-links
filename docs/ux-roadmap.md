@@ -68,7 +68,7 @@ Objectif :
 
 ### 4. Interaction avec un artiste
 
-Un clic sur un artiste ouvre un modal.
+Un clic sur un artiste ouvre un panneau contextuel latéral.
 
 Deux cas sont distingués :
 
@@ -77,7 +77,7 @@ Deux cas sont distingués :
 
 #### Artiste principal
 
-Le modal doit pouvoir afficher à terme :
+Le panneau doit pouvoir afficher à terme :
 
 - nom
 - genre principal
@@ -88,7 +88,7 @@ Le modal doit pouvoir afficher à terme :
 
 #### Artiste collaborateur
 
-Le modal doit afficher en priorité :
+Le panneau doit afficher en priorité :
 
 - les collaborations ou morceaux en commun avec l'artiste central
 - le contexte de la relation
@@ -97,6 +97,7 @@ Le modal doit afficher en priorité :
 Objectif :
 
 - garder un niveau d'information adapté au rôle de l'artiste dans le graphe
+- conserver la visibilité du graphe pendant toute l'exploration
 
 ## Structure cible des écrans
 
@@ -110,14 +111,14 @@ Objectif :
 
 - barre haute avec titre et recherche
 - graphe en zone principale
-- zone secondaire pour aides ou informations légères
-- modal pour les détails d'artiste
+- panneau contextuel latéral ouvrable/fermé pour les détails d'artiste
 
-### Modal artiste
+### Panneau artiste
 
 - en-tête clair avec nom et identité visuelle
 - contenu court et structuré
 - action principale : explorer cet artiste
+- fermeture possible sans casser la vue graphe
 
 ## Choix UX recommandés
 
@@ -127,12 +128,12 @@ Pour la prochaine itération UX, la priorité recommandée est :
 
 - recherche centrale sur l'accueil
 - bascule vers une vue dédiée au graphe après sélection
-- ouverture d'un modal au clic sur un artiste
+- ouverture d'un panneau contextuel latéral au clic sur un artiste
 - bouton pour recentrer l'exploration sur un autre artiste
 
 ## Choix d'implémentation
 
-- Ne pas surcharger la première version des modals.
+- Ne pas surcharger la première version du panneau artiste.
 - Commencer par un contenu simple mais cohérent.
 - Faire du graphe la zone principale dès la première vraie refonte UX.
 - Garder les animations simples au départ.
@@ -166,8 +167,8 @@ Références d'intention :
 
 ### Bloc UX 2
 
-- Ajouter un modal pour l'artiste principal
-- Ajouter un modal pour un collaborateur
+- Transformer le panneau latéral en panneau contextuel ouvrable/fermé
+- Adapter le contenu selon l'artiste principal ou le collaborateur
 - Introduire l'action `Explorer cet artiste`
 
 ### Bloc UX 3

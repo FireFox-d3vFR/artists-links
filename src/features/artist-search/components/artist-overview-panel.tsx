@@ -5,6 +5,8 @@ type ArtistOverviewPanelProps = {
   artist: ArtistDetails | null;
   isLoading?: boolean;
   errorMessage?: string | null;
+  isOpen?: boolean;
+  onClose?: () => void;
   onArtistSelect?: (artist: ArtistListItem) => void;
 };
 
@@ -14,11 +16,31 @@ export function ArtistOverviewPanel({
   artist,
   isLoading = false,
   errorMessage = null,
+  isOpen = true,
+  onClose,
   onArtistSelect,
 }: ArtistOverviewPanelProps) {
+  if (!isOpen) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <aside className="rounded-[2rem] border border-white/10 bg-black/20 p-6 text-left shadow-xl shadow-black/20">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+            Panneau artiste
+          </p>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-slate-300 transition hover:border-white/25 hover:bg-white/8"
+          >
+            Fermer
+          </button>
+        </div>
+
         <p className="text-sm text-slate-300">Chargement de la fiche artiste...</p>
       </aside>
     );
@@ -27,6 +49,20 @@ export function ArtistOverviewPanel({
   if (errorMessage) {
     return (
       <aside className="rounded-[2rem] border border-red-400/30 bg-red-500/10 p-6 text-left shadow-xl shadow-black/20">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <p className="text-sm uppercase tracking-[0.2em] text-red-100">
+            Panneau artiste
+          </p>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full border border-red-300/30 px-3 py-1 text-xs font-medium text-red-100 transition hover:border-red-200/50 hover:bg-red-400/10"
+          >
+            Fermer
+          </button>
+        </div>
+
         <p className="text-sm text-red-100">{errorMessage}</p>
       </aside>
     );
@@ -35,6 +71,20 @@ export function ArtistOverviewPanel({
   if (!artist) {
     return (
       <aside className="rounded-[2rem] border border-white/10 bg-black/20 p-6 text-left shadow-xl shadow-black/20">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+            Panneau artiste
+          </p>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-slate-300 transition hover:border-white/25 hover:bg-white/8"
+          >
+            Fermer
+          </button>
+        </div>
+
         <p className="text-sm text-slate-300">
           Sélectionne un artiste pour afficher sa fiche et ses connexions directes.
         </p>
@@ -44,17 +94,25 @@ export function ArtistOverviewPanel({
 
   return (
     <aside className="rounded-[2rem] border border-white/10 bg-black/20 p-6 text-left shadow-xl shadow-black/20">
-      <div className="flex flex-col gap-4 border-b border-white/10 pb-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
-              Artiste sélectionné
-            </p>
-            <h2 className="mt-2 text-3xl font-semibold text-white">{artist.name}</h2>
-            <p className="mt-1 text-sm text-slate-500">{artist.slug}</p>
-          </div>
+      <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+            Artiste sélectionné
+          </p>
+          <h2 className="mt-2 text-3xl font-semibold text-white">{artist.name}</h2>
+          <p className="mt-1 text-sm text-slate-500">{artist.slug}</p>
+        </div>
 
+        <div className="flex items-center gap-2">
           <ArtistGenreBadge genre={artist.primaryGenre} />
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-slate-300 transition hover:border-white/25 hover:bg-white/8"
+          >
+            Fermer
+          </button>
         </div>
       </div>
 

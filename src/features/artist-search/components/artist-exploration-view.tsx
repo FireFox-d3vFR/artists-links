@@ -7,6 +7,9 @@ type ArtistExplorationViewProps = {
   artist: ArtistDetails | null;
   isLoading?: boolean;
   errorMessage?: string | null;
+  isPanelOpen?: boolean;
+  onClosePanel?: () => void;
+  onOpenPanel?: () => void;
   onArtistSelect?: (artist: ArtistListItem) => void;
 };
 
@@ -16,6 +19,9 @@ export function ArtistExplorationView({
   artist,
   isLoading = false,
   errorMessage = null,
+  isPanelOpen = true,
+  onClosePanel,
+  onOpenPanel,
   onArtistSelect,
 }: ArtistExplorationViewProps) {
   if (!artist && !isLoading && !errorMessage) {
@@ -25,8 +31,24 @@ export function ArtistExplorationView({
   const graphData = artist ? buildArtistGraphData(artist) : null;
 
   return (
-    <section className="grid w-full gap-6 xl:grid-cols-[minmax(0,1.35fr)_300px] xl:items-start">
+    <section
+      className={`grid w-full gap-6 xl:items-start ${
+        isPanelOpen ? "xl:grid-cols-[minmax(0,1.35fr)_300px]" : "xl:grid-cols-1"
+      }`}
+    >
       <div className="min-w-0">
+        {!isPanelOpen ? (
+          <div className="mb-4 flex justify-end">
+            <button
+              type="button"
+              onClick={onOpenPanel}
+              className="rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-white/30 hover:bg-white/8"
+            >
+              Ouvrir le panneau
+            </button>
+          </div>
+        ) : null}
+
         {artist && graphData ? (
           <ArtistGraph
             data={graphData}
@@ -61,14 +83,18 @@ export function ArtistExplorationView({
         )}
       </div>
 
-      <div className="min-w-0">
-        <ArtistOverviewPanel
-          artist={artist}
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-          onArtistSelect={onArtistSelect}
-        />
-      </div>
+      {isPanelOpen ? (
+        <div className="min-w-0">
+          <ArtistOverviewPanel
+            artist={artist}
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+            isOpen={isPanelOpen}
+            onClose={onClosePanel}
+            onArtistSelect={onArtistSelect}
+          />
+        </div>
+      ) : null}
     </section>
   );
 }

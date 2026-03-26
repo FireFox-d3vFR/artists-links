@@ -21,11 +21,13 @@ export function ArtistExplorer() {
     useState<ArtistDetails | null>(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
   const [detailsErrorMessage, setDetailsErrorMessage] = useState<string | null>(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(true);
 
   const hasSelectedArtist = selectedArtistSlug !== null;
 
   async function handleArtistSelect(artist: ArtistListItem) {
     setSelectedArtistSlug(artist.slug);
+    setIsPanelOpen(true);
     setIsDetailsLoading(true);
     setDetailsErrorMessage(null);
 
@@ -56,6 +58,15 @@ export function ArtistExplorer() {
     setSelectedArtistDetails(null);
     setDetailsErrorMessage(null);
     setIsDetailsLoading(false);
+    setIsPanelOpen(true);
+  }
+
+  function handleClosePanel() {
+    setIsPanelOpen(false);
+  }
+
+  function handleOpenPanel() {
+    setIsPanelOpen(true);
   }
 
   if (!hasSelectedArtist) {
@@ -82,6 +93,9 @@ export function ArtistExplorer() {
         artist={selectedArtistDetails}
         isLoading={isDetailsLoading}
         errorMessage={detailsErrorMessage}
+        isPanelOpen={isPanelOpen}
+        onClosePanel={handleClosePanel}
+        onOpenPanel={handleOpenPanel}
         onArtistSelect={handleArtistSelect}
       />
     </div>
