@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 
-import { ArtistDetailsPanel } from "@/features/artist-search/components/artist-details-panel";
+import { ArtistExplorationView } from "@/features/artist-search/components/artist-exploration-view";
 import { ArtistSearchPanel } from "@/features/artist-search/components/artist-search-panel";
+import { ExplorationHeader } from "@/features/artist-search/components/exploration-header";
+import { LandingHero } from "@/features/artist-search/components/landing-hero";
 import type {
   ArtistDetails,
   ArtistDetailsResponse,
@@ -11,14 +13,16 @@ import type {
   ArtistListItem,
 } from "@/types/artists/artist.types";
 
-// Ce conteneur orchestre la recherche et l'affichage du détail d'un artiste.
-// Il sert de point d'entrée frontend avant l'intégration du graphe.
+// Ce conteneur orchestre les deux états principaux de l'expérience :
+// l'accueil centré sur la recherche, puis la vue d'exploration orientée graphe.
 export function ArtistExplorer() {
   const [selectedArtistSlug, setSelectedArtistSlug] = useState<string | null>(null);
   const [selectedArtistDetails, setSelectedArtistDetails] =
     useState<ArtistDetails | null>(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
   const [detailsErrorMessage, setDetailsErrorMessage] = useState<string | null>(null);
+
+  const hasSelectedArtist = selectedArtistSlug !== null;
 
   async function handleArtistSelect(artist: ArtistListItem) {
     setSelectedArtistSlug(artist.slug);
@@ -47,14 +51,34 @@ export function ArtistExplorer() {
     }
   }
 
-  return (
-    <div className="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,460px)] lg:items-start">
-      <ArtistSearchPanel
-        selectedArtistSlug={selectedArtistSlug}
-        onArtistSelect={handleArtistSelect}
-      />
+  function handleResetExploration() {
+    setSelectedArtistSlug(null);
+    setSelectedArtistDetails(null);
+    setDetailsErrorMessage(null);
+    setIsDetailsLoading(false);
+  }
 
-      <ArtistDetailsPanel
+  if (!hasSelectedArtist) {
+    return (
+      <div className="flex w-full justify-center">
+        <LandingHero>
+          <ArtistSearchPanel onArtistSelect={handleArtistSelect} />
+        </LandingHero>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex w-full max-w-7xl flex-col gap-8">
+      <ExplorationHeader onResetExploration={handleResetExploration}>
+        <ArtistSearchPanel
+          variant="compact"
+          selectedArtistSlug={selectedArtistSlug}
+          onArtistSelect={handleArtistSelect}
+        />
+      </ExplorationHeader>
+
+      <ArtistExplorationView
         artist={selectedArtistDetails}
         isLoading={isDetailsLoading}
         errorMessage={detailsErrorMessage}

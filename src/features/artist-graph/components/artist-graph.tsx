@@ -14,6 +14,7 @@ type ArtistGraphProps = {
 // le graphe local autour de l'artiste sélectionné.
 export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const nodeSelectHandler = onNodeSelect ?? null;
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -50,12 +51,12 @@ export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
             color: "#f8fafc",
             "text-valign": "center",
             "text-halign": "center",
-            "font-size": 12,
+            "font-size": 13,
             "font-weight": 600,
             "text-wrap": "wrap",
-            "text-max-width": "90px",
-            width: 52,
-            height: 52,
+            "text-max-width": "96px",
+            width: 56,
+            height: 56,
             "border-width": 2,
             "border-color": "#e2e8f0",
           },
@@ -63,9 +64,9 @@ export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
         {
           selector: 'node[isCentral = "true"]',
           style: {
-            width: 68,
-            height: 68,
-            "font-size": 14,
+            width: 76,
+            height: 76,
+            "font-size": 15,
             "border-width": 3,
             "border-color": "#ffffff",
           },
@@ -80,7 +81,7 @@ export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
             "curve-style": "bezier",
             label: "data(label)",
             color: "#cbd5e1",
-            "font-size": 10,
+            "font-size": 11,
             "text-rotation": "autorotate",
             "text-background-color": "#020617",
             "text-background-opacity": 0.7,
@@ -91,7 +92,7 @@ export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
       layout: {
         name: "cose",
         animate: false,
-        padding: 24,
+        padding: 36,
       },
       userZoomingEnabled: true,
       userPanningEnabled: true,
@@ -106,7 +107,7 @@ export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
       const nodeSlug = tappedNode.data("slug") as string;
       const isCentral = (tappedNode.data("isCentral") as boolean) ?? false;
 
-      onNodeSelect?.({
+      nodeSelectHandler?.({
         id: nodeId,
         label: nodeLabel,
         color: nodeColor,
@@ -118,16 +119,16 @@ export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
     return () => {
       cy.destroy();
     };
-  }, [data, onNodeSelect ?? null]);
+  }, [data, nodeSelectHandler]);
 
   return (
-    <div className="rounded-[2rem] border border-white/10 bg-black/20 p-4 shadow-xl shadow-black/20">
-      <div className="mb-4 flex items-center justify-between gap-4">
+    <div className="rounded-[2rem] border border-white/10 bg-black/20 p-5 shadow-xl shadow-black/20">
+      <div className="mb-5 flex items-center justify-between gap-4">
         <div>
           <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
             Graphe local
           </p>
-          <h3 className="mt-1 text-xl font-semibold text-white">
+          <h3 className="mt-1 text-2xl font-semibold text-white">
             Connexions directes
           </h3>
         </div>
@@ -139,7 +140,7 @@ export function ArtistGraph({ data, onNodeSelect }: ArtistGraphProps) {
 
       <div
         ref={containerRef}
-        className="h-[420px] w-full rounded-[1.5rem] border border-white/10 bg-slate-950/70"
+        className="h-[560px] w-full rounded-[1.5rem] border border-white/10 bg-slate-950/70"
       />
     </div>
   );
